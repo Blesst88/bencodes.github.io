@@ -1,1 +1,9 @@
+# basic options 
+# author :
+# email :
+# description :
 theme: jekyll-theme-merlot
+layout: single
+permalink: Blesst88/bencodes.github.io/
+title: &title "Project Capstone - Wine Recommender"
+author_profile: true
