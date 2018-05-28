@@ -1,8 +1,4 @@
-# bencodes.github.io
-Dr Ben Lee Github repository
-
-
-#Wine recommender system ----------------------------------------------------------------------------
+# Wine recommender system ----------------------------------------------------------------------------
 Research questions 
 
 Does wine descriptors impact Rating ?
@@ -56,9 +52,6 @@ wine = pd.read_csv('C:/Users/bless/Documents/GitHub/projects/project-capstone/Wi
 ```python
 wine.head(5)
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -161,28 +154,9 @@ wine.head(5)
 </div>
 
 
-
-
-```python
-# find out the data type of column 'variety' 
-type(wine['variety'].values[0])
-```
-
-
-
-
-    str
-
-
-
-
 ```python
 wine.variety.unique()
 ```
-
-
-
-
     array(['Cabernet Sauvignon', 'Tinta de Toro', 'Sauvignon Blanc',
            'Pinot Noir', 'Provence red blend', 'Friulano', 'Tannat',
            'Chardonnay', 'Tempranillo', 'Malbec', 'Rosé', 'Tempranillo Blend',
@@ -357,3 +331,104 @@ wine.variety.unique()
            'Pinot Grigio-Chardonnay', 'Muscadet', 'Viura-Sauvignon Blanc',
            'Huxelrebe', 'Tokay Pinot Gris', 'Chardonnay-Pinot Grigio',
            'Moristel', 'Carnelian'], dtype=object)
+
+```python
+# find null values 
+wine[wine['price'].isnull()].head()
+```
+
+
+```python
+# Do some preprocessing to limit the # of wine varities in the dataset
+wine = wine[pd.notnull(wine['country'])]
+wine = wine[pd.notnull(wine['price'])]
+# wine = wine.drop(wine.columns[0], axis=1) 
+
+variety_threshold = 500 # Anything that occurs less than this will be removed.
+value_counts = wine['variety'].value_counts()
+to_remove = value_counts[value_counts <= variety_threshold].index
+wine.replace(to_remove, np.nan, inplace=True)
+wine = wine[pd.notnull(wine['variety'])]
+```
+
+
+```python
+# Check for Nan cells 
+wine.isnull().sum().sum()
+
+nan_rows_price= wine[wine['price'].isnull()].T.any().T
+
+nan_rows_price.count()
+
+```
+    0
+    
+   
+```python
+# remove all nan prices rows 
+newwine=wine[~wine['price'].isnull()]
+
+# remove all nan rating rows 
+newwine=newwine[~newwine['points'].isnull()]
+
+
+```python
+# find all the unique points ratings
+newwine['points'].unique()
+```
+
+
+
+    array([ 96,  95,  94,  90,  91,  86,  89,  88,  87,  93,  92,  85,  84,
+            83,  82,  81, 100,  99,  98,  97,  80], dtype=int64)
+
+
+```python
+# # get a smaller subset of newwine to reduce memory requirements
+newwine=newwine[0:20000]
+```
+
+
+```python
+# reduce the records to top 16 varieties  as this counts for 16991 records or 85%
+
+winesub=newwine.loc[(newwine['variety'] == u'Pinot Noir') | (newwine['variety'] == u'Chardonnay') \
+   | (newwine['variety'] == u'Cabernet Sauvignon') | (newwine['variety'] == u'Red Blend')  \
+   | (newwine['variety'] == u'Bordeaux-style Red Blend') | (newwine['variety'] == u'Sauvignon Blanc') \
+   | (newwine['variety'] == u'Riesling') | (newwine['variety'] == u'Syrah')                                   
+   | (newwine['variety'] == u'Merlot') | (newwine['variety'] == u'Rosé')
+   | (newwine['variety'] == u'Malbec') | (newwine['variety'] == u'Zinfandel') 
+   | (newwine['variety'] == u'Nebbiolo') | (newwine['variety'] == u'Portuguese Red')   
+   | (newwine['variety'] == u'Sangiovese') | (newwine['variety'] == u'Sparkling Blend')                                         
+   | (newwine['variety'] == u'Rhône-style Red Blend') | (newwine['variety'] == u'Cabernet Franc') 
+   | (newwine['variety'] == u'Champagne Blend') | (newwine['variety'] == u'Grüner Veltliner') 
+   | (newwine['variety'] == u'Pinot Gris') | (newwine['variety'] == u'Gamay')                 
+   | (newwine['variety'] == u'Portuguese White') | (newwine['variety'] == u'Viognier')                                          
+   | (newwine['variety'] == u'Gewurztraminer') | (newwine['variety'] == u'Pinot Grigio') 
+   | (newwine['variety'] == u'Petite Sirah') | (newwine['variety'] == u'Bordeaux-style White Blend') 
+   | (newwine['variety'] == u'Carmenère') | (newwine['variety'] == u'Barbera')   
+   | (newwine['variety'] == u'Shiraz') | (newwine['variety'] == u'Grenache') 
+   | (newwine['variety'] == u'Sangiovese Grosso') | (newwine['variety'] == u'Tempranillo Blend')   
+   | (newwine['variety'] == u'Chenin Blanc') ] 
+```
+
+
+```python
+# Plot scatter plots
+import matplotlib
+import matplotlib.pyplot as plt
+fig = plt.figure(figsize=(18,12))
+ax = fig.gca()
+
+plt.ylim(0, 2500)
+plt.xlabel(r'Rating (Points)')
+plt.ylabel(r'Price in $')
+# plt.legend(loc='upper left')
+# actual known points
+plt.scatter(x = winesub['points'] ,y=winesub['price'],c='g')
+plt.xticks(rotation=90)
+plt.show()
+```
+<img src="output_17_0.jpg" width="100%">
+
+
