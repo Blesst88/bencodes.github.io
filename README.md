@@ -1,22 +1,22 @@
 # Wine recommender system
-Research questions 
+###  Research questions 
 
-Does wine descriptors impact Rating ?
+### Does wine descriptors impact Rating ?
   - Machine learning to classify reviews 
      what are key words that determines ratings?
      
     Apply Logistic regression, Random Forest to determine relationship between key words and ratings, wine type, varieties  
         
- There is a correlation between Ratings and Price ?
+### There is a correlation between Ratings and Price ?
    - Correlation analysis
 
 
-The higher the Rating and Price the higher the consumption of the wine variety
+### The higher the Rating and Price the higher the consumption of the wine variety
    - Linear Regression
 
- Are wine descriptors good predictors of  wine price and points rating ?
+### Are wine descriptors good predictors of  wine price and points rating ?
 
-#---------------------------------
+## ----------------------------------------------------
 
 ```python
 import numpy as np
