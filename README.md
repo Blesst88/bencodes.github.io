@@ -3,7 +3,7 @@
 
 ### Does wine descriptors impact Rating ?
   - Machine learning to classify reviews 
-     what are key words that determines ratings?
+    What are key words that determines ratings?
      
     Apply Logistic regression, Random Forest to determine relationship between key words and ratings, wine type, varieties  
         
@@ -15,7 +15,9 @@
    - Linear Regression
 
 ### Are wine descriptors good predictors of  wine price and points rating ?
-
+    - Linear Regression 
+    
+    
 ## ---------------------------------------------------------------------------------------
 
 ```python
