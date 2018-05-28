@@ -358,6 +358,7 @@ newwine=wine[~wine['price'].isnull()]
 # remove all nan rating rows 
 newwine=newwine[~newwine['points'].isnull()]
 
+```
 
 ```python
 # find all the unique points ratings
