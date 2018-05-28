@@ -1456,3 +1456,896 @@ lregress(dataX,datay,nameX,namey)
 <img src="output_41_2.png" width="100%">
 
 <img src="output_41_3.png" width="100%">
+
+
+```python
+# setup wine types based on the grape variety 
+
+winetrim.loc[(winetrim['variety'] == u'Champagne Blend') | (winetrim['variety'] == u'Sparkling Blend'),'sparkling_wine']=1 
+
+winetrim.loc[(winetrim['variety'] == u'Chardonnay') |  (winetrim['variety'] == u'Sauvignon Blanc') | (winetrim['variety'] == u'Riesling')
+         | (winetrim['variety'] == u'Zinfandel') |  (winetrim['variety'] == u'Grüner Veltliner') |  (winetrim['variety'] == u'Pinot Gris')
+         |  (winetrim['variety'] == u'Pinot Grigio')|  (winetrim['variety'] == u'Viognier')|  (winetrim['variety'] == u'Portuguese White')
+         |  (winetrim['variety']==  u'Gewurztraminer') |  (winetrim['variety'] ==  u'Bordeaux-style White Blend')
+         |  (winetrim['variety'] ==  u'Chenin Blanc'),'white_wine']=1
+# #       
+winetrim.loc[(winetrim['variety'] == u'Pinot Noir') |  (winetrim['variety'] == u'Cabernet Sauvignon') | (winetrim['variety'] == u'Red Blend')
+         |  (winetrim['variety'] == u'Bordeaux-style Red Blend') | (winetrim['variety'] == u'Syrah') | (winetrim['variety'] == u'Merlot')
+         |  (winetrim['variety'] ==  u'Rosé')|  (winetrim['variety'] == u'Malbec') | (winetrim['variety'] == u'Nebbiolo')       
+        |  (winetrim['variety'] ==  u'Portuguese Red') |  (winetrim['variety'] ==  u'Sangiovese') |  (winetrim['variety'] ==  u'Rhône-style Red Blend') 
+        |  (winetrim['variety'] ==  u'Cabernet Franc')|  (winetrim['variety'] ==  u'Gamay')         |  (winetrim['variety'] ==  u'Petite Sirah')| (winetrim['variety'] ==  u'Carmenère') 
+        |  (winetrim['variety'] ==  u'Barbera') |  (winetrim['variety'] ==  u'Shiraz') |  (winetrim['variety'] ==  u'Grenache')|  (winetrim['variety'] ==  u'Sangiovese Grosso')
+         |  (winetrim['variety'] ==  u'Tempranillo Blend'),'red_wine']=1
+
+```
+
+```python
+winetrim['red_wine'].fillna(0,inplace=True)
+winetrim['white_wine'].fillna(0,inplace=True)
+winetrim['sparkling_wine'].fillna(0,inplace=True)
+winetrim[['red_wine','white_wine','sparkling_wine']]
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>red_wine</th>
+      <th>white_wine</th>
+      <th>sparkling_wine</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+     <tr>
+      <th>25649</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25651</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25654</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>18357 rows × 3 columns</p>
+</div>
+
+```python
+def logregress2(winetype):
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score
+
+    # split data into Train and Test for  X and y_
+    X = dfwinerate2.values  # array of 16345 rows x 500 words 
+    # y = winevariety[u'grapevar__Barbera'] #array of  16345 rows x 1 for points 
+    y = winetrim[winetype].values #array of  16345 rows x 1 for points 
+
+    # split the new DataFrame into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.5)
+
+    # Run Multinomial  Logit regression to check if description  terms can be used to predict variety  
+
+    model=LogisticRegression(multi_class='ovr',solver ='newton-cg').fit(X_train,y_train)
+    # print model.summary()
+    yhat = model.predict(X_test)  # will output array with integer values.
+
+    #     print (yhat, model.coef_,model.score, accuracy_score(y_test, yhat))
+
+    # change the array into a list 
+    import numpy as np
+    modelcoef=np.array(model.coef_).tolist()
+    len(modelcoef)
+    len(countfeatures)
+
+    # split the list into individual items
+    import itertools
+    words = list(itertools.chain(*modelcoef))
+    #     words
+
+    #     setup a dictionary with word counts and word labels
+    typedict = dict(zip(countfeatures,words))
+    #     varietydict
+
+    # add accuracy score and wine variety to dictionary
+    typedict['0Accuracy'] = accuracy_score(y_test, yhat)*100
+
+    #     varietydict
+    # sort the words with largest word counts first 
+    sorted_d = sorted(typedict.items(), key=lambda x: x[1],reverse=True)
+    #     sorted_d
+    typedict['0type'] = winetype
+
+    # Calculate the confusion matrix metrics for your model below.¶
+    from sklearn.metrics import classification_report
+    print(winetype,'\n',classification_report(y_test, yhat))
+
+
+    #     get top 50 words scores 
+    results=[winetype]+sorted_d[:500]
+    #     return results
+    
+#     get top 50 words scores 
+    results=[winetype]+sorted_d[:500]
+    return results
+```
+
+
+```python
+# Run logit regression of words vectoriser scores vs variety of grapes for all grapes variety
+types=['red_wine','white_wine','sparkling_wine']
+winetypes=winetrim[types]
+# choose X and Y for linear regression 
+dfwinefinal2= pd.DataFrame()
+
+for w in winetypes:
+    print(w)
+    dfwinefinal2[w]=logregress2(w)
+dfwinefinal2
+```
+
+    red_wine
+    
+
+    C:\Users\bless\Anaconda3\lib\site-packages\sklearn\model_selection\_split.py:2026: FutureWarning: From version 0.21, test_size will always complement train_size unless both are specified.
+      FutureWarning)
+    
+
+    red_wine 
+                  precision    recall  f1-score   support
+    
+            0.0       0.93      0.89      0.91      2993
+            1.0       0.95      0.97      0.96      6186
+    
+    avg / total       0.94      0.94      0.94      9179
+    
+    white_wine
+    white_wine 
+                  precision    recall  f1-score   support
+    
+            0.0       0.95      0.96      0.96      6346
+            1.0       0.91      0.88      0.90      2833
+    
+    avg / total       0.94      0.94      0.94      9179
+    
+    sparkling_wine
+    sparkling_wine 
+                  precision    recall  f1-score   support
+    
+            0.0       0.98      1.00      0.99      9019
+            1.0       0.57      0.13      0.21       160
+    
+    avg / total       0.98      0.98      0.98      9179
+    
+    
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>red_wine</th>
+      <th>white_wine</th>
+      <th>sparkling_wine</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>red_wine</td>
+      <td>white_wine</td>
+      <td>sparkling_wine</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(0Accuracy, 94.1387950757163)</td>
+      <td>(0Accuracy, 93.85553981915241)</td>
+      <td>(0Accuracy, 98.3113628935614)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(cabernet, 2.448800807301344)</td>
+      <td>(zinfandel, 3.720291801599576)</td>
+      <td>(delicate, 1.449433598954269)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(syrah, 2.297080721028543)</td>
+      <td>(yellow, 2.6811271954859297)</td>
+      <td>(blanc, 1.1257393125315474)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(red fruits, 2.2772917812993985)</td>
+      <td>(riesling, 2.2578850690580503)</td>
+      <td>(red berry, 1.082840683861012)</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(rosé, 2.1607153278054394)</td>
+      <td>(pear, 2.1767461314596876)</td>
+      <td>(beautiful, 1.0777514010427627)</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>(cranberry, 2.1596465050036793)</td>
+      <td>(pineapple, 2.13370911341668)</td>
+      <td>(berries, 1.0707441119338923)</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>(black fruits, 1.9648428061447203)</td>
+      <td>(sauvignon blanc, 1.8879616191330448)</td>
+      <td>(dusty, 1.049821827512417)</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>(merlot, 1.9459150404721075)</td>
+      <td>(tropical, 1.8636772049915336)</td>
+      <td>(strawberry, 1.0397613107752979)</td>
+    </tr>
+    
+     <tr>
+      <th>497</th>
+      <td>(yellow, -2.334603457485137)</td>
+      <td>(syrah, -2.2371457504213836)</td>
+      <td>(cola, -1.289501080718196)</td>
+    </tr>
+    <tr>
+      <th>498</th>
+      <td>(apple, -2.3797398271627035)</td>
+      <td>(strawberry, -2.2655788096264344)</td>
+      <td>(spice, -1.4013767352651698)</td>
+    </tr>
+    <tr>
+      <th>499</th>
+      <td>(pear, -3.017311001645999)</td>
+      <td>(red fruits, -2.2806971106509613)</td>
+      <td>(riesling, -1.5922146113731568)</td>
+    </tr>
+    <tr>
+      <th>500</th>
+      <td>(chardonnay, -3.0704370367179226)</td>
+      <td>(cabernet, -2.5050269311630022)</td>
+      <td>(tannins, -1.8098668601660877)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+```python
+# Use SGDRegressor
+import numpy as np
+from sklearn import linear_model
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+
+Xscores = dfwinerate2.values
+ypr = winetrim['price']
+
+
+# split the new DataFrame into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(Xscores, ypr, random_state=1,train_size=0.5)
+
+clf = linear_model.SGDRegressor()
+clf.fit(X_train, y_train)
+# clf.summary()
+
+y_predicted = clf.predict(X_test)
+
+
+prediction_error = y_test - y_predicted
+prediction_error
+
+df2 = pd.DataFrame()
+
+df2['actual price']=y_test
+df2['predicted price']=y_predicted
+df2['Residuals'] = df2['actual price'] -df2['predicted price']
+df2['predicted price'].dropna()
+df2['Residuals'].dropna()
+df2    
+
+# Calculate the absolute errors
+errors = abs(df2.Residuals)
+# Print out the mean absolute error (mae)
+print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+
+    
+# Calculate mean absolute percentage error (MAPE)
+mape = 100 * (errors / y_test)
+# Calculate and display accuracy
+accuracy = 100 - np.mean(mape)
+print('Accuracy:', round(accuracy, 2), '%.')
+
+
+```
+
+    Mean Absolute Error: 17.07 degrees.
+    Accuracy: 40.31 %.
+    
+
+    
+```python
+# Compute prediction of prices use SGRegressor outputs
+pd.options.display.max_rows = 999
+pd.options.display.max_columns = 999
+# print str(list_of_ints).strip('[]')
+count=0
+maxcount=5
+diff=0
+cumdiff=0
+for i in joindf.index:
+        print(joindf.loc[[i],['description']])
+        a=joindf.loc[[i],['predicted price']].values
+        b=joindf.loc[[i],['price']].values
+        diff = a-b
+        cumdiff += abs(a-b)
+    #         print('a',a,'b',b,a-b)
+        print(joindf.loc[[i],['predicted price']],joindf.loc[[i],['price']])
+        print('difference in price :' ,str(diff).strip('[]'))
+        count += 1
+        print('count',count)
+        if count>= maxcount:
+            break        
+# Compare the average difference between actual price and the model's predicted price
+print('Average prediction difference in predicted $: ', str(cumdiff / count).strip('[]'))
+```
+
+                                                 description
+    15940  Smells like Brazil nuts and talc powder. On th...
+           predicted price
+    15940        20.898038        price
+    15940   11.0
+    difference in price : 9.89803837
+    count 1
+                                                description
+    8386  A little oak, brisk acidity and good flavors o...
+          predicted price
+    8386         14.84076       price
+    8386   13.0
+    difference in price : 1.84076002
+    count 2
+                                               description
+    255  This opens with aromas of black plum, oak, esp...
+         predicted price
+    255        63.201373      price
+    255   56.0
+    difference in price : 7.20137251
+    count 3
+                                                 description
+    12326  Here's a steady value wine from Northern Italy...
+           predicted price
+    12326        15.088011        price
+    12326   10.0
+    difference in price : 5.08801082
+    count 4
+                                                 description
+    17476  Lots of oak, but with tons of fruit and excell...
+           predicted price
+    17476        49.366866        price
+    17476   16.0
+    difference in price : 33.36686634
+    count 5
+    Average prediction difference in predicted $:  11.47900961
+    
+
+
+```python
+# Use Random Forest Regressor
+def RFRegres(X,y,yname):
+#     features = dfwinerate2
+#     ypr = np.array(winetrim['points'])
+
+
+```python
+# Use Random Forest Regressor
+def RFRegres(X,y,yname):
+#     features = dfwinerate2
+#     ypr = np.array(winetrim['points'])
+
+
+    # Labels are the values we want to predict y
+    labels = y
+    # Remove the labels from the features
+    # axis 1 refers to the columns
+
+    # Saving feature names for later use
+    feature_list = list(X.columns)
+    # Convert to numpy array
+    features = np.array(X)
+
+
+    # Using Skicit-learn to split data into training and testing sets
+    from sklearn.model_selection import train_test_split
+    # Split the data into training and testing sets
+    train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.25,
+                                                                                random_state = 1)
+
+    print('Training Features Shape:', train_features.shape)
+    print('Training Labels Shape:', train_labels.shape)
+    print('Testing Features Shape:', test_features.shape)
+    print('Testing Labels Shape:', test_labels.shape)
+
+
+    # # The baseline predictions are the historical averages
+    # baseline_preds = test_features[:, feature_list.index('average')]
+    # # Baseline errors, and display average baseline error
+    # baseline_errors = abs(baseline_preds - test_labels)
+    # print('Average baseline error: ', round(np.mean(baseline_errors), 2))
+
+    # Import the model we are using
+    from sklearn.ensemble import RandomForestRegressor
+    # Instantiate model with 1000 decision trees
+    rf = RandomForestRegressor(n_estimators = 100, random_state = 42)
+    # Train the model on training data
+    rf.fit(train_features, train_labels)
+
+
+    # Use the forest's predict method on the test data
+    predictions = rf.predict(test_features)
+    # Calculate the absolute errors
+    errors = abs(predictions - test_labels)
+    # Print out the mean absolute error (mae)
+    print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+
+
+    # Calculate mean absolute percentage error (MAPE)
+    mape = 100 * (errors / test_labels)
+    # Calculate and display accuracy
+    accuracy = 100 - np.mean(mape)
+    print('Accuracy:', round(accuracy, 2), '%.')
+
+
+    prediction_error = test_labels - predictions
+    prediction_error
+
+    df4 = pd.DataFrame()
+    actualname ='actual'+yname
+    predictname='predicted'+yname
+
+    df4[actualname]=test_labels
+    df4[predictname]=predictions
+    df4['Residuals'] = df4[actualname] -df4[predictname]
+    df4[predictname].dropna()
+    df4['Residuals'].dropna()
+    
+    return df4    
+```
+
+
+```python
+# Apply RF regressor for Words vs Price, Points
+yname=input("enter y to be predicted ie price or points: ")
+Xfeat = dfwinerate2
+ypr = np.array(winetrim[yname])
+RFRegres(Xfeat,ypr,yname)
+```
+
+    enter y to be predicted ie price or points: price
+    Training Features Shape: (13767, 500)
+    Training Labels Shape: (13767,)
+    Testing Features Shape: (4590, 500)
+    Testing Labels Shape: (4590,)
+    Mean Absolute Error: 15.67 degrees.
+    Accuracy: 49.83 %.
+    
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>actualprice</th>
+      <th>predictedprice</th>
+      <th>Residuals</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.0</td>
+      <td>21.03</td>
+      <td>-10.03</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>13.0</td>
+      <td>17.88</td>
+      <td>-4.88</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>56.0</td>
+      <td>63.68</td>
+      <td>-7.68</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10.0</td>
+      <td>21.46</td>
+      <td>-11.46</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>16.0</td>
+      <td>35.89</td>
+      <td>-19.89</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>25.0</td>
+      <td>29.21</td>
+      <td>-4.21</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>30.0</td>
+      <td>39.66</td>
+      <td>-9.66</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>89.0</td>
+      <td>67.38</td>
+      <td>21.62</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>18.0</td>
+      <td>54.06</td>
+      <td>-36.06</td>
+    </tr>
+     <tr>
+      <th>4587</th>
+      <td>42.0</td>
+      <td>32.15</td>
+      <td>9.85</td>
+    </tr>
+    <tr>
+      <th>4588</th>
+      <td>40.0</td>
+      <td>16.58</td>
+      <td>23.42</td>
+    </tr>
+    <tr>
+      <th>4589</th>
+      <td>50.0</td>
+      <td>53.01</td>
+      <td>-3.01</td>
+    </tr>
+  </tbody>
+</table>
+<p>4590 rows × 3 columns</p>
+</div>
+
+
+```python
+# Use decision tree classifier to determine fit 
+def computedectree(variety):
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score
+
+    # rf = RandomForest(n_estimators=1000, max_depth=None, max_features='auto')
+
+    Xf = dfwinerate2
+
+#     print(variety)
+#     print(winevariety[variety])
+    yvar=np.array(winevariety[variety]) #varieties of wine
+    
+    Xtrain, Xtest, ytrain, ytest = train_test_split(Xf, yvar, test_size=0.33)
+
+    dtc = DecisionTreeClassifier(max_depth=None, max_features='auto')
+    dtc.fit(Xtrain, ytrain)
+    return print('dtc acc:', dtc.score(Xtest, ytest))
+
+```
+
+
+```python
+variety=winevariety.columns.tolist()
+variety
+```
+
+```python
+for w in variety:
+#     var=list(w)
+    print('Variety is : ',w)
+    computedectree(w)
+```
+
+
+    Variety is :  grapevar__Barbera
+    dtc acc: 0.9897655992076593
+    Variety is :  grapevar__Bordeaux-style Red Blend
+    dtc acc: 0.9354572466160449
+    Variety is :  grapevar__Bordeaux-style White Blend
+    dtc acc: 0.9876196764608782
+    Variety is :  grapevar__Cabernet Franc
+    dtc acc: 0.9818421921426214
+    Variety is :  grapevar__Cabernet Sauvignon
+    dtc acc: 0.8851105975569495
+    Variety is :  grapevar__Carmenère
+    dtc acc: 0.9910861670518323
+    Variety is :  grapevar__Champagne Blend
+    dtc acc: 0.9914163090128756
+    Variety is :  grapevar__Chardonnay
+    dtc acc: 0.9108616705183229
+    Variety is :  grapevar__Chenin Blanc
+    dtc acc: 0.9910861670518323
+    Variety is :  grapevar__Grenache
+    dtc acc: 0.9897655992076593
+    
+    
+    
+```python
+# choose flavour, price range  
+
+Flavour=input("Flavour: epg Cherry, Plum, Apricot, Peach")
+Taste=input('Taste: eg Woody, Oaky')
+combined=Flavour+'|'+Taste
+# Price = input('Enter Price range: ')
+joindf[(joindf['description'].str.contains(Flavour|Taste)) & (joindf['description'].str.contains(Taste))],['description','price','points']
+# joindf[(joindf['description'].str.contains(Flavour|Taste),regex=True]#,['description','price','points']
+# joindf.description.str.contains(combined,regex=False) #,['description','price','points']
+```
+
+```python
+wineprice2=winetrim[['price']]
+
+joinwinefinal=pd.DataFrame()
+
+joinwinefinal=pd.merge(joinwine,wineprice2, left_index=True,right_index=True)
+
+# rename column price_y to price
+joinwinefinal.rename({'price_y':'price'}, axis=1,inplace=True)
+
+# Apply RF regressor for Words+variety as features  vs Price, Points
+yname=input('enter predictor y : eg price ')
+Xfeat=joinwinefinal[[i for i in list(joinwinefinal.columns) if i != yname]]
+ylist=list(yname)
+ypr = np.array(joinwinefinal[yname])
+# len(ypr), Xfeat.shape
+# print(ypr)
+RFRegres(Xfeat,ypr,yname)
+
+enter predictor y : eg price price
+Training Features Shape: (13767, 533)
+Training Labels Shape: (13767,)
+Testing Features Shape: (4590, 533)
+Testing Labels Shape: (4590,)
+Mean Absolute Error: 14.51 degrees.
+Accuracy: 54.61 %.
+actualprice	predictedprice	Residuals
+0	11.0	20.99	-9.99
+1	13.0	24.92	-11.92
+2	56.0	69.38	-13.38
+3	10.0	17.54	-7.54
+4	16.0	35.60	-19.60
+5	25.0	31.87	-6.8
+:
+4585	26.0	46.84	-20.84
+4586	25.0	40.89	-15.89
+4587	42.0	41.63	0.37
+4588	40.0	21.37	18.63
+4589	50.0	53.94	-3.94
+4590 rows × 3 columns
+
+```
+```python
+# compute ROC and AUCusing the differebnt regressors Ridge and Lasso
+def ROCAUC(variety):
+    from sklearn.linear_model import LogisticRegressionCV
+    from sklearn.metrics import roc_curve, auc
+    from sklearn.metrics import classification_report, confusion_matrix
+    from sklearn.model_selection import cross_val_score
+
+    lr = LogisticRegression()
+    
+    Xf = dfwinerate2
+    yvar=np.array(winevariety[variety]) #varieties of wine
+    
+    print('setup LR')
+    X_train, X_test, y_train, y_test = train_test_split(Xf, yvar, test_size=0.50)
+
+    # using a 25-fold cross-val for fun
+    scores = cross_val_score(lr, Xf, yvar, cv=25)
+    print(scores)
+    print(np.mean(scores))
+  
+    lr.fit(X_train, y_train)
+    
+    yhat = lr.predict(X_test)
+    yhat_pp = lr.predict_proba(X_test)
+
+# show confusion matrix 
+    conmat = np.array(confusion_matrix(y_test, yhat, labels=[1,0]))
+
+    confusion = pd.DataFrame(conmat, index=['Variety', 'Not Variety'],
+                         columns=['predicted_Yes','predicted_No'])
+    print(confusion)
+
+# plot ROC and AUC curves without lasso and ridge 
+    fpr, tpr, _ = roc_curve(y_test, yhat_pp[:,1])
+    roc_auc = auc(fpr, tpr)
+
+#     plt.figure(figsize=[8,8])
+#     plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc, linewidth=4)
+#     plt.plot([0, 1], [0, 1], 'k--', linewidth=4)
+#     plt.xlim([-0.05, 1.0])
+#     plt.ylim([-0.05, 1.05])
+#     plt.xlabel('False Positive Rate', fontsize=18)
+#     plt.ylabel('True Positive Rate', fontsize=18)
+#     plt.title('Receiver operating characteristic: Is Variety', fontsize=18)
+#     plt.legend(loc="lower right")
+#     plt.show()
+
+#   now use Ridge 
+    lr_ridge = LogisticRegressionCV(penalty='l2', Cs=20, cv=20) #l2= Ridge, L1=Lasso
+    lr_ridge.fit(X_train, y_train)
+
+    yhat_ridge = lr_ridge.predict(X_test)
+    yhat_ridge_pp = lr_ridge.predict_proba(X_test)
+
+    fpr_ridge, tpr_ridge, _ = roc_curve(y_test, yhat_ridge_pp[:,1])
+    roc_auc_ridge = auc(fpr_ridge, tpr_ridge)
+
+#   now use Lasso     
+    lr_lasso = LogisticRegressionCV(penalty='l1', solver='liblinear', Cs=100, cv=10)
+    lr_lasso.fit(X_train, y_train)
+
+    yhat_lasso = lr_lasso.predict(X_test)
+    yhat_lasso_pp = lr_lasso.predict_proba(X_test)
+
+    fpr_lasso, tpr_lasso, _ = roc_curve(y_test, yhat_lasso_pp[:,1])
+    roc_auc_lasso = auc(fpr_lasso, tpr_lasso)
+
+# plot ROC and AUC graphs
+
+    plt.figure(figsize=[8,8])
+
+    plt.plot(fpr, tpr, label='Original (area = %0.2f)' % roc_auc, linewidth=4)
+    plt.plot(fpr_ridge, tpr_ridge, label='Ridge (area = %0.2f)' % roc_auc_ridge, 
+             linewidth=4, color='darkred')
+    plt.plot(fpr_lasso, tpr_lasso, label='Lasso (area = %0.2f)' % roc_auc_lasso, 
+             linewidth=4, color='darkgoldenrod')
+
+    plt.plot([0, 1], [0, 1], 'k--', linewidth=4)
+    plt.xlim([-0.05, 1.0])
+    plt.ylim([-0.05, 1.05])
+    plt.xlabel('False Positive Rate', fontsize=18)
+    plt.ylabel('True Positive Rate', fontsize=18)
+    plt.title('Receiver operating characteristic: is Variety', fontsize=18)
+    plt.legend(loc="lower right")
+    plt.show()
+    
+    return print('done')
+    
+    for w in variety:
+#     var=list(w)
+    print('Variety is : ',w)
+    ROCAUC(w)
+    
+    
+    Variety is :  grapevar__Barbera
+setup LR
+[0.99319728 0.99455782 0.99319728 0.99047619 0.99319728 0.99319728
+ 0.99319728 0.99591281 0.99591281 0.9986376  0.99455041 0.99455041
+ 0.99591281 0.99591281 0.99455041 0.99591281 0.99455041 0.99318801
+ 0.99591281 0.99455041 0.99455041 0.99455041 0.99455041 0.99455041
+ 0.99455041]
+0.9945530779069119
+             predicted_Yes  predicted_No
+Variety                 10            38
+Not Variety              4          9127
+
+<img src="output_100_1.png" width="100%">
+
+done
+Variety is :  grapevar__Bordeaux-style Red Blend
+setup LR
+[0.96462585 0.96734694 0.94965986 0.95646259 0.96326531 0.95646259
+ 0.96190476 0.96190476 0.95102041 0.96326531 0.96054422 0.96866485
+ 0.95776567 0.96730245 0.96049046 0.96866485 0.96866485 0.96321526
+ 0.96457766 0.95095368 0.96185286 0.95361528 0.95907231 0.95088677
+ 0.94952251]
+0.9600684814319986
+             predicted_Yes  predicted_No
+Variety                183           291
+Not Variety            102          8603
+
+<img src="output_101_1.png" width="100%">
+
+done
+Variety is :  grapevar__Bordeaux-style White Blend
+setup LR
+[0.99183673 0.99319728 0.99183673 0.99319728 0.99183673 0.99319728
+ 0.99183673 0.99183673 0.99319728 0.99047619 0.99318801 0.99591281
+ 0.99455041 0.99318801 0.99318801 0.99182561 0.99455041 0.99318801
+ 0.99318801 0.99318801 0.99455041 0.99455041 0.99454297 0.99454297
+ 0.99454297]
+0.9932458408688091
+             predicted_Yes  predicted_No
+Variety                  4            67
+Not Variety              4          9104
+<img src="output_102_1.png" width="100%">
