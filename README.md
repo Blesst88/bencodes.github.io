@@ -16,7 +16,8 @@ The higher the Rating and Price the higher the consumption of the wine variety
 
  Are wine descriptors good predictors of  wine price and points rating ?
 
-#----------------------------------------------------------------------------
+#---------------------------------
+
 ```python
 import numpy as np
 
@@ -37,7 +38,7 @@ from sklearn.metrics import pairwise_distances
 import seaborn as sns
 
 
-
+```
 
 ```python
 # path='C:/Users/bless/Documents/GitHub/projects/project-capstone/Capstone project data'
