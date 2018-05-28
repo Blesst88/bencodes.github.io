@@ -528,3 +528,268 @@ plt.show(g)
 ```
 <img src="output_23_0.png" width="100%">
 
+```python
+# Remove all the 5 outliers in price ie > $1000
+winetrim=winesub[winesub['price']  <= 1000]
+winetrim.describe(include='all')
+```
+
+```python
+winetrim=winetrim.reset_index(drop=True)
+```
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# a4_dims = (11.7, 8.27)
+# fig, ax = plt.subplots(figsize=a4_dims)
+sns.set_style("whitegrid")
+g = sns.lmplot(x="points", y="price", data=winetrim, aspect=2,size=5)
+g = (g.set_axis_labels("Points","Price").set(xlim=(80,101),ylim=(0,800)))
+plt.title("Points vs Price")
+plt.show(g)
+```
+<img src="output_26_0.png" width="100%">
+
+
+```python
+sns.jointplot(x="points", y="price", data=winetrim)
+```
+<img src="output_27_0.png" width="100%">
+
+
+```python
+# transform Variety data using dummy variables 
+
+winesubext = pd.concat([winetrim, pd.get_dummies(winetrim['variety'],prefix='grapevar_')], axis=1)
+```
+
+```python
+# set the Varieties as features 
+
+variety=[u'grapevar__Barbera',u'grapevar__Bordeaux-style Red Blend',u'grapevar__Bordeaux-style White Blend',
+              u'grapevar__Cabernet Franc',u'grapevar__Cabernet Sauvignon',u'grapevar__Carmenère',u'grapevar__Champagne Blend',
+              u'grapevar__Chardonnay',u'grapevar__Chenin Blanc',
+              u'grapevar__Grenache',u'grapevar__Grüner Veltliner',u'grapevar__Malbec',u'grapevar__Merlot',u'grapevar__Nebbiolo',
+              u'grapevar__Petite Sirah',u'grapevar__Pinot Grigio',u'grapevar__Pinot Gris',u'grapevar__Pinot Noir',
+              u'grapevar__Portuguese Red',u'grapevar__Portuguese White',u'grapevar__Red Blend',u'grapevar__Rhône-style Red Blend',
+              u'grapevar__Riesling',u'grapevar__Rosé',u'grapevar__Sangiovese',u'grapevar__Sangiovese Grosso',u'grapevar__Sauvignon Blanc',
+              u'grapevar__Shiraz',u'grapevar__Sparkling Blend',u'grapevar__Syrah',u'grapevar__Tempranillo Blend',
+              u'grapevar__Viognier',u'grapevar__Zinfandel']
+winevariety=winesubext[variety]
+
+
+```python
+# Linear regression to determine relationships beteen X and Y 
+# choose X and Y 
+
+def lregress (X,y,labelX,labely):
+
+    # split data into test and train and then apply cross validation 
+
+    from sklearn.cross_validation import train_test_split
+    # split the data with 50% in each set
+
+    X1, X2, y1, y2 = train_test_split(X, y, random_state=0,
+                                      train_size=0.50)
+    # OLS regression 
+
+    X = sm.add_constant(X)
+    # Note the difference in argument order
+    model = sm.OLS(y1, X1).fit()
+    # model.summary()
+    # predictions = model.predict(X) # make the predictions by the model
+
+    y2_predicted = model.predict(X2)
+    model.summary()
+    # y2_model
+    
+    prediction_error = y2 - y2_predicted
+    prediction_error
+
+    df1 = pd.DataFrame()
+    df1[labely]  = y2
+#     df1[labelX] = X2
+    df1['predicted y']=y2_predicted
+    df1['Residuals'] = df1[labely] -df1['predicted y']
+    df1[labely].dropna
+    df1['predicted y'].dropna()
+    df1['Residuals'].dropna()
+    
+   
+    
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    %matplotlib inline
+  
+    sns.distplot(df1['Residuals']) 
+    return model.summary() ,sns.lmplot(x=labely, y='predicted y', data=df1)
+         
+```
+
+
+```python
+# choose X and Y for linear regression eg Points vs Price
+
+nameX=input("X feature eg points: ")
+namey = input('y to be predicted eg price: ')
+
+dataX = winetrim[nameX]
+datay = winetrim[namey]
+
+lregress(dataX,datay,nameX,namey)
+```
+
+    X feature eg points: points
+    y to be predicted eg price: price
+    
+
+    (<class 'statsmodels.iolib.summary.Summary'>
+     """
+                                 OLS Regression Results                            
+     ==============================================================================
+     Dep. Variable:                  price   R-squared:                       0.522
+     Model:                            OLS   Adj. R-squared:                  0.522
+     Method:                 Least Squares   F-statistic:                 1.004e+04
+     Date:                Thu, 17 May 2018   Prob (F-statistic):               0.00
+     Time:                        11:21:35   Log-Likelihood:                -45692.
+     No. Observations:                9178   AIC:                         9.139e+04
+     Df Residuals:                    9177   BIC:                         9.139e+04
+     Df Model:                           1                                         
+     Covariance Type:            nonrobust                                         
+     ==============================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+     ------------------------------------------------------------------------------
+     points         0.4150      0.004    100.206      0.000       0.407       0.423
+     ==============================================================================
+     Omnibus:                    12060.438   Durbin-Watson:                   1.988
+     Prob(Omnibus):                  0.000   Jarque-Bera (JB):          3595367.884
+     Skew:                           7.256   Prob(JB):                         0.00
+     Kurtosis:                      98.870   Cond. No.                         1.00
+     ==============================================================================
+     
+     Warnings:
+     [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+     """, <seaborn.axisgrid.FacetGrid at 0x2265a5afda0>)
+
+<img src="output_31_2.png" width="100%">
+
+
+<img src="output_31_3.png" width="100%">
+
+```python
+# setup tokennizer NLP for wine reviews description 
+from collections import defaultdict
+from sklearn.cross_validation import train_test_split
+import pandas as pd
+import numpy as np
+import scipy as sp
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
+from sklearn import metrics
+%matplotlib inline
+# define X and y
+XX = winetrim['description'].values
+yy = winetrim['points'].values
+zz = winetrim['price'].values
+```
+
+
+```python
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+
+custom_stop_words = list(ENGLISH_STOP_WORDS)
+
+# You can of course add your own custom stopwords
+custom_stop_words.append('wine')
+custom_stop_words.append('bordeaux')
+```
+
+
+```python
+# use the count vectorizer to compare results 
+# include 1-grams and 2-grams
+vect = CountVectorizer(ngram_range=(1, 5),max_features=500,stop_words='english')
+X_train_dtm = vect.fit_transform(XX)
+countfeatures=vect.get_feature_names()
+X_train_dtm.shape
+len(countfeatures)
+# # last 50 features
+print (countfeatures[-50:])
+```
+
+
+    ['tight', 'tightly', 'time', 'toast', 'toasted', 'toasty', 'tobacco', 'tomato', 'tones', 'touch', 'touches', 'tropical', 'tropical fruit', 'valley', 'value', 'vanilla', 'varietal', 'variety', 'velvety', 'verdot', 'vibrant', 'vines', 'vineyard', 'vineyards', 'vintage', 'violet', 'warm', 'way', 'weight', 'wet', 'whiff', 'white', 'white pepper', 'wild', 'wine', 'wine offers', 'wine shows', 'winemaker', 'winery', 'wines', 'wood', 'wood aging', 'wrapped', 'year', 'years', 'yellow', 'young', 'zest', 'zesty', 'zinfandel']
+    
+
+
+```python
+# # create a DF based on the combined vectors outputs from the count vectorizer
+dfwinerate2=pd.DataFrame(data=X_train_dtm.todense(),columns=countfeatures)
+# dfwinerate2.head(4)
+```
+
+
+```python
+# Run linear regression of words vectoriser scores vs Points 
+# choose X and Y for linear regression 
+
+nameX1=input("X feature eg bag of words from vectorizer: ")
+namey1 = input('y to be predicted eg points : ')
+
+dataX1 = dfwinerate2.values
+datay1 = yy
+
+lregress(dataX1,datay1,nameX1,namey1)
+
+```
+
+    X feature eg bag of words from vectorizer: words
+    y to be predicted eg points : points
+    
+
+
+
+
+    (<class 'statsmodels.iolib.summary.Summary'>
+     """
+                                 OLS Regression Results                            
+     ==============================================================================
+     Dep. Variable:                      y   R-squared:                       0.955
+     Model:                            OLS   Adj. R-squared:                  0.952
+     Method:                 Least Squares   F-statistic:                     366.3
+     Date:                Thu, 17 May 2018   Prob (F-statistic):               0.00
+     Time:                        11:23:50   Log-Likelihood:                -39971.
+     No. Observations:                9178   AIC:                         8.094e+04
+     Df Residuals:                    8678   BIC:                         8.451e+04
+     Df Model:                         500                                         
+     Covariance Type:            nonrobust                                         
+     ==============================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+     ------------------------------------------------------------------------------
+     x1             0.4559      1.594      0.286      0.775      -2.669       3.581
+     x2             3.0031      1.664      1.805      0.071      -0.258       6.264
+     x3            -1.2236      1.804     -0.678      0.498      -4.759       2.312
+     x4             3.4445      1.822      1.891      0.059      -0.126       7.015
+     :
+     x499          -3.8866      2.446     -1.589      0.112      -8.681       0.908
+     x500           0.6928      3.225      0.215      0.830      -5.630       7.016
+     ==============================================================================
+     Omnibus:                    11900.425   Durbin-Watson:                   1.993
+     Prob(Omnibus):                  0.000   Jarque-Bera (JB):          4088433.438
+     Skew:                           7.000   Prob(JB):                         0.00
+     Kurtosis:                     105.445   Cond. No.                         318.
+     ==============================================================================
+     
+     Warnings:
+     [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+     """, <seaborn.axisgrid.FacetGrid at 0x2265f7f0a20>)
+
+
+<img src="output_37_2.png" width="100%">
+
+
+<img src="output_37_3.png" width="100%">
