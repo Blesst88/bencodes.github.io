@@ -428,7 +428,7 @@ sns.distplot(winesub['price'],ax=ax[1])
 
 fig.show()
 ```
-<img src="output_18_0.png" width="100%">
+<img src="output_18_1.png" width="100%">
 
 ```python
 # Visualise the categorisation 
