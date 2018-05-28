@@ -2318,9 +2318,9 @@ setup LR
              predicted_Yes  predicted_No
 Variety                 10            38
 Not Variety              4          9127
-
+```
 <img src="output 100_1.png" width="100%">
-
+```
 done
 Variety is :  grapevar__Bordeaux-style Red Blend
 setup LR
@@ -2333,9 +2333,9 @@ setup LR
              predicted_Yes  predicted_No
 Variety                183           291
 Not Variety            102          8603
-
+```
 <img src="output_101_1.png" width="100%">
-
+```
 done
 Variety is :  grapevar__Bordeaux-style White Blend
 setup LR
@@ -2348,4 +2348,6 @@ setup LR
              predicted_Yes  predicted_No
 Variety                  4            67
 Not Variety              4          9104
+```
 <img src="output_102_1.png" width="100%">
+```
