@@ -432,3 +432,99 @@ plt.show()
 <img src="output_17_0.png" width="100%">
 
 
+```python
+fig, ax =plt.subplots(1,2)
+
+sns.distplot(winesub['points'],ax=ax[0])
+sns.distplot(winesub['price'],ax=ax[1])
+
+fig.show()
+```
+<img src="output_18_0.png" width="100%">
+
+```python
+# Visualise the categorisation 
+
+g = sns.pairplot(data=winesub, hue='variety')
+g = (g.set(xlim=(80,101),ylim=(0,2500)))
+plt.title("Winery/Brand vs Price")
+plt.show(g)
+
+```
+<img src="output_19_0.png" width="100%">
+
+```python
+# Plot scatter plots
+import matplotlib
+import matplotlib.pyplot as plt
+fig = plt.figure(figsize=(18,12))
+ax = fig.gca()
+
+plt.ylim(50, 2500)
+plt.xlabel(r'Country')
+plt.ylabel(r'Price in $')
+plt.legend(loc='upper left')
+# actual known points
+plt.scatter(x = winesub['country'] ,y=winesub['price'],c='r')
+plt.xticks(rotation=45)
+plt.show()
+```
+<img src="output_20_0.png" width="100%">
+
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+a4_dims = (16, 8.27)
+fig, ax = plt.subplots(figsize=a4_dims)
+
+sns.set_style("whitegrid")
+sns.barplot(x="variety", y="price", data=winesub,ax=ax)
+# g = sns.lmplot(x="Segment", y="Revenue", data=winesales, aspect=2)
+
+# g = (g.set_axis_labels("Returns","Revenue").set(xlim=(70,101),ylim=(0,120000)))
+     
+plt.title(" Variety vs Price")
+plt.xticks(rotation=90)
+ 
+plt.show(g)
+```
+<img src="output_21_0.png" width="100%">
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+a4_dims = (16, 8.27)
+fig, ax = plt.subplots(figsize=a4_dims)
+
+sns.set_style("whitegrid")
+sns.barplot(x="variety", y="points", data=winesub,ax=ax)
+# g = sns.lmplot(x="Segment", y="Revenue", data=winesales, aspect=2)
+
+# g = (g.set_axis_labels("Returns","Revenue").set(xlim=(70,101),ylim=(0,120000)))
+     
+plt.title(" Variety vs Points")
+plt.xticks(rotation=70)
+ 
+plt.show(g)
+```
+<img src="output_22_0.png" width="100%">
+
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# a4_dims = (11.7, 8.27)
+# fig, ax = plt.subplots(figsize=a4_dims)
+sns.set_style("whitegrid")
+g = sns.lmplot(x="points", y="price", data=winesub, aspect=2,size=5)
+g = (g.set_axis_labels("Points","Price").set(xlim=(80,101),ylim=(0,2500)))
+plt.title("Points vs Price")
+plt.show(g)
+
+```
+<img src="output_23_0.png" width="100%">
+
