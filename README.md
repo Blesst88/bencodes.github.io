@@ -16,7 +16,7 @@
 
 ### Are wine descriptors good predictors of  wine price and points rating ?
 
-## ----------------------------------------------------
+## -----------------------------------------------------------------------------------------------------
 
 ```python
 import numpy as np
