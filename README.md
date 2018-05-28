@@ -2172,27 +2172,211 @@ ypr = np.array(joinwinefinal[yname])
 # print(ypr)
 RFRegres(Xfeat,ypr,yname)
 ```
-enter predictor y : eg price price
-Training Features Shape: (13767, 533)
-Training Labels Shape: (13767,)
-Testing Features Shape: (4590, 533)
-Testing Labels Shape: (4590,)
-Mean Absolute Error: 14.51 degrees.
-Accuracy: 54.61 %.
-actualprice	predictedprice	Residuals
-0	11.0	20.99	-9.99
-1	13.0	24.92	-11.92
-2	56.0	69.38	-13.38
-3	10.0	17.54	-7.54
-4	16.0	35.60	-19.60
-5	25.0	31.87	-6.8
-:
-4585	26.0	46.84	-20.84
-4586	25.0	40.89	-15.89
-4587	42.0	41.63	0.37
-4588	40.0	21.37	18.63
-4589	50.0	53.94	-3.94
-4590 rows × 3 columns
+```
+
+    enter predictor y : eg price price
+    Training Features Shape: (13767, 533)
+    Training Labels Shape: (13767,)
+    Testing Features Shape: (4590, 533)
+    Testing Labels Shape: (4590,)
+    Mean Absolute Error: 14.51 degrees.
+    Accuracy: 54.61 %.
+    
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>actualprice</th>
+      <th>predictedprice</th>
+      <th>Residuals</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.0</td>
+      <td>20.99</td>
+      <td>-9.99</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>13.0</td>
+      <td>24.92</td>
+      <td>-11.92</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>56.0</td>
+      <td>69.38</td>
+      <td>-13.38</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10.0</td>
+      <td>17.54</td>
+      <td>-7.54</td>
+    </tr>
+
+    <tr>
+      <th>4588</th>
+      <td>40.0</td>
+      <td>21.37</td>
+      <td>18.63</td>
+    </tr>
+    <tr>
+      <th>4589</th>
+      <td>50.0</td>
+      <td>53.94</td>
+      <td>-3.94</td>
+    </tr>
+  </tbody>
+</table>
+<p>4590 rows × 3 columns</p>
+</div>
+
+```python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+# choose flavour, price range  
+def selectwine():
+    pd.options.display.max_colwidth = 100
+    print('Enter your wine preference:')
+    Flavour=input('Enter Flavour: eg. Cherry, Plum, Apricot, Peach: ')
+    Taste=input('Enter Taste: eg Woody, Oaky: ')
+    Price=input('Price Budget: ')
+    Budget=int(Price)
+    combined=Flavour+'|'+Taste
+    # Price = input('Enter Price range: ')
+
+    results=joindf[(joindf['description'].str.contains(Flavour)) & (joindf['description'].str.contains(Taste)) & (joindf['price']<= Budget)]
+
+    show=results[['description','price','points','variety']]
+
+    for (idx, row) in show.iterrows():
+        print(row.loc['description'])
+        print('Variety',row.variety)
+        print('Price: ',row.price,'--------   Points:',row.points,'\n','\n')
+        done='completed'
+    return done
+
+if __name__ == "__main__":
+    app.run()
+# set host IP where necessary
+#     app.run(host='0.0.0.0', port=8080, debug=True)
+    
+```
+
+     * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+    
+
+    Enter your wine preference:
+    Enter Flavour: eg. Cherry, Plum, Apricot, Peach: plum 
+    Enter Taste: eg Woody, Oaky: oaky
+    Price Budget: 50
+    
+
+    127.0.0.1 - - [28/May/2018 13:13:59] "GET / HTTP/1.1" 200 -
+    
+
+    This varietal Garnacha is chunky and heavily oaked on the nose, with woody aromas of vanilla and plastic. An overtly oaky, awkward feeling palate tastes of resin on top of plum and blackberry, while the finish shows more resin mixed with mint.
+    Variety Grenache
+    Price:  21.0 --------   Points: 84 
+     
+    
+    Spiced cherry, plum and dry oak aromas drive the nose. The palate is plump, fruity and creamy feeling, with woody, resiny flavors of plum and raspberry. The finish is oaky and a bit hot, with mint and pepper notes.
+    Variety Pinot Noir
+    Price:  20.0 --------   Points: 88 
+     
+    
+    Starts with light tomato leaf and herbal red fruit aromas. The palate is tight and fresh, with juicy acidity propelling roasted, oaky plum flavors. Finishes with a mix of herbal fruit and barrel toast.
+    Variety Merlot
+    Price:  18.0 --------   Points: 87 
+     
+    
+    Blackberry and cassis aromas show earthy and herbaceous hints, with coconut and vanilla tones coming on late. The acid-driven palate meets oaky flavors of coconut and vanilla, softened by plum and cherry notes on the finish.
+    Variety Cabernet Sauvignon
+    Price:  20.0 --------   Points: 88 
+     
+    
+    Gritty cassis aromas are oaky and challenging, which is what you can get when a wine spends more than three years in oak. In the mouth, this is wiry and rubbery. Foxy plum and cherry flavors finish clampy and herbal. Very good but with a few holes and pitfalls.
+    Variety Tempranillo Blend
+    Price:  38.0 --------   Points: 89 
+     
+    
+    The opening is oaky, thus cedar and balsamic aromas run roughshod over the cherry, roast plum and vanilla scents. The palate is wiry and acidic, with flavors of herbal plum and cherry that lead to a driving, acid-rich finish, with an earthy, baked flavor and a herbal overtone.
+    Variety Carmenère
+    Price:  17.0 --------   Points: 87 
+     
+    
+    Wiry, slightly grassy aromas of raspberry and plum come with a touch of oaky vanilla. This Malbec feels downright hard and choppy due to tough gritty tannins. Plum and berry flavors come in blips rather than a harmonious whole, and this tastes of lactic oak and rubber on the finish.
+    Variety Malbec
+    Price:  30.0 --------   Points: 87 
+     
+    
+    Char and hickory override fruit on the bouquet, while the palate is full, round and falls into form with time in the glass. Tastes of forward oak and spice along with berry and plum fruit. Toasty and warm on the finish, but oaky and resiny.
+    Variety Malbec
+    Price:  12.0 --------   Points: 86 
+     
+    
+    Gritty stalky aromas suggest that the original material for this Gran Reserva was not fully ripe. This feels wide chunky and grabby, with harsh tannins. Stalky flavors of herbal raspberry and plum come with oaky vanilla accents and tomatoey spice on the finish.
+    Variety Tempranillo Blend
+    Price:  30.0 --------   Points: 86 
+     
+    
+    Muscled up and dark, with robust blackberry, tar, spice and mocha aromas. The palate is big and dense but raring to run, with smashing black cherry, berry and black plum lushness. Turns more oaky on the finish, with coconut and mocha. Impressive for New World Syrah. Drink now through 2013.
+    Variety Syrah
+    Price:  38.0 --------   Points: 92 
+     
+    
+    Leafy and dry on the nose, with red berry and brick dust aromas. Feels good for Carmenère, with herbal, oaky red-fruit flavors that lead to a finish with sweet plum notes matched by creamy leftover oak. Nice even if the fruit fades quickly on the palate and finish.
+    Variety Carmenère
+    Price:  16.0 --------   Points: 87 
+     
+    
+    Saucy, scratchy aromas suggest road tar and compost. This wine is wide in feel, with peppery, spicy raspberry and plum flavors. A minty, herbal tasting finish is neither overbearing nor oaky.
+    Variety Cabernet Sauvignon
+    Price:  28.0 --------   Points: 87 
+     
+    
+    Resiny oak and mildly stalky berry aromas muscle out cherry and raspberry scents. This feels grabby and clampy, while oaky flavors of mixed berries and baked plum end with coconut-infused oak flavors and notes of raisin and licorice. Drink through 2020.
+    Variety Tempranillo Blend
+    Price:  35.0 --------   Points: 90 
+     
+    
+    Opens with grainy, whispy aromas of reedy raspberry and smoky blackberry. Feels tannic and aggressive, so it punches ahead with lively, firm flavors of raspberry, plum and strawberry. Finishes oaky, with vanilla and dill notes. Bold Rioja to drink now.
+    Variety Tempranillo Blend
+    Price:  20.0 --------   Points: 88 
+     
+    
+    Blackberry, cherry and earthy aromas are backed by a secondary wave of oaky char. This is 80% Garnacha and 20% Carignan with raw clamp to the palate created by grabby tannins and tomatoey acidity. Briny raspberry and plum flavors finish with rubbery tannins and related grab. This is a tough wine but one with lots of life and power. Drink through 2019.
+    Variety Red Blend
+    Price:  19.0 --------   Points: 88 
+     
+    
+    Spiced cherry, plum and dry oak aromas drive the nose. The palate is plump, fruity and creamy feeling, with woody, resiny flavors of plum and raspberry. The finish is oaky and a bit hot, with mint and pepper notes.
+    Variety Pinot Noir
+    Price:  20.0 --------   Points: 88 
+     
 
 
 ```python
@@ -2211,7 +2395,7 @@ def ROCAUC(variety):
     print('setup LR')
     X_train, X_test, y_train, y_test = train_test_split(Xf, yvar, test_size=0.50)
 
-    # using a 25-fold cross-val for fun
+    # using a 25-fold cross-val for trial
     scores = cross_val_score(lr, Xf, yvar, cv=25)
     print(scores)
     print(np.mean(scores))
