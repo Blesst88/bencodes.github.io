@@ -538,7 +538,7 @@ g = (g.set_axis_labels("Points","Price").set(xlim=(80,101),ylim=(0,800)))
 plt.title("Points vs Price")
 plt.show(g)
 ```
-<img src="output_26_0.png" width="100%">
+<img src="points vs price small.png" width="100%">
 
 
 ```python
