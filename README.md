@@ -1398,3 +1398,61 @@ dfwinefinal
 </div>
 
   
+```python
+# choose X and Y for linear regression using price and words 
+
+nameX=input("X feature eg words: ")
+namey = input('y to be predicted eg price: ')
+
+# dataX = winetrim[nameX]
+dataX=dfwinerate2.values
+datay = winetrim[namey]
+
+lregress(dataX,datay,nameX,namey)
+```
+
+    X feature eg words: words
+    y to be predicted eg price: price
+    
+
+    (<class 'statsmodels.iolib.summary.Summary'>
+     """
+                                 OLS Regression Results                            
+     ==============================================================================
+     Dep. Variable:                  price   R-squared:                       0.623
+     Model:                            OLS   Adj. R-squared:                  0.602
+     Method:                 Least Squares   F-statistic:                     28.71
+     Date:                Thu, 17 May 2018   Prob (F-statistic):               0.00
+     Time:                        11:25:25   Log-Likelihood:                -44604.
+     No. Observations:                9178   AIC:                         9.021e+04
+     Df Residuals:                    8678   BIC:                         9.377e+04
+     Df Model:                         500                                         
+     Covariance Type:            nonrobust                                         
+     ==============================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+     ------------------------------------------------------------------------------
+     x1             9.6056      2.641      3.637      0.000       4.428      14.783
+     x2            12.5656      2.756      4.559      0.000       7.163      17.968
+     x3            -0.0843      2.988     -0.028      0.977      -5.941       5.772
+     x4             3.5563      3.018      1.179      0.239      -2.359       9.472
+     :
+     x496           0.0171      2.516      0.007      0.995      -4.915       4.949
+     x497          -2.7614      1.783     -1.548      0.122      -6.257       0.734
+     x498           1.1143      2.758      0.404      0.686      -4.291       6.520
+     x499          -3.8866      2.446     -1.589      0.112      -8.681       0.908
+     x500           0.6928      3.225      0.215      0.830      -5.630       7.016
+     ==============================================================================
+     Omnibus:                    11900.425   Durbin-Watson:                   1.993
+     Prob(Omnibus):                  0.000   Jarque-Bera (JB):          4088433.438
+     Skew:                           7.000   Prob(JB):                         0.00
+     Kurtosis:                     105.445   Cond. No.                         318.
+     ==============================================================================
+     
+     Warnings:
+     [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+     """, <seaborn.axisgrid.FacetGrid at 0x22666bba390>)
+
+
+<img src="output_41_2.png" width="100%">
+
+<img src="output_41_3.png" width="100%">
