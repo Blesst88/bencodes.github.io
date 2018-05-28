@@ -2319,7 +2319,7 @@ setup LR
 Variety                 10            38
 Not Variety              4          9127
 
-<img src="output_100_1.png" width="100%">
+<img src="output 100_1.png" width="100%">
 
 done
 Variety is :  grapevar__Bordeaux-style Red Blend
