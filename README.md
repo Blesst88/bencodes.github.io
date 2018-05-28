@@ -2094,60 +2094,10 @@ RFRegres(Xfeat,ypr,yname)
     Accuracy: 54.61 %.
     
 
+<img src="Accuracy Table.png" width="100%">
 
 
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>actualprice</th>
-      <th>predictedprice</th>
-      <th>Residuals</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>11.0</td>
-      <td>20.99</td>
-      <td>-9.99</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>13.0</td>
-      <td>24.92</td>
-      <td>-11.92</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>56.0</td>
-      <td>69.38</td>
-      <td>-13.38</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>10.0</td>
-      <td>17.54</td>
-      <td>-7.54</td>
-    </tr>
-
-    <tr>
-      <th>4588</th>
-      <td>40.0</td>
-      <td>21.37</td>
-      <td>18.63</td>
-    </tr>
-    <tr>
-      <th>4589</th>
-      <td>50.0</td>
-      <td>53.94</td>
-      <td>-3.94</td>
-    </tr>
-  </tbody>
-</table>
-<p>4590 rows × 3 columns</p>
-</div>
 
 ```python
 from flask import Flask
