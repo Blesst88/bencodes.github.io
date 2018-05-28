@@ -1,4 +1,4 @@
-# Wine recommender system ----------------------------------------------------------------------------
+# Wine recommender system
 Research questions 
 
 Does wine descriptors impact Rating ?
@@ -429,6 +429,6 @@ plt.scatter(x = winesub['points'] ,y=winesub['price'],c='g')
 plt.xticks(rotation=90)
 plt.show()
 ```
-<img src="output_17_0.jpg" width="100%">
+<img src="output_17_0.png" width="100%">
 
 
