@@ -1632,13 +1632,8 @@ for w in winetypes:
 dfwinefinal2
 ```
 
-    red_wine
-    
 
-    C:\Users\bless\Anaconda3\lib\site-packages\sklearn\model_selection\_split.py:2026: FutureWarning: From version 0.21, test_size will always complement train_size unless both are specified.
-      FutureWarning)
-    
-
+   
     red_wine 
                   precision    recall  f1-score   support
     
