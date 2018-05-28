@@ -457,7 +457,7 @@ plt.scatter(x = winesub['country'] ,y=winesub['price'],c='r')
 plt.xticks(rotation=45)
 plt.show()
 ```
-<img src="output_20_0.png" width="100%">
+<img src="country vs price.png" width="100%">
 
 
 ```python
@@ -478,7 +478,7 @@ plt.xticks(rotation=90)
  
 plt.show(g)
 ```
-<img src="output_21_0.png" width="100%">
+<img src="variety vs price.png" width="100%">
 
 ```python
 import matplotlib.pyplot as plt
@@ -498,7 +498,7 @@ plt.xticks(rotation=70)
  
 plt.show(g)
 ```
-<img src="output_22_0.png" width="100%">
+<img src="variety vs points.png" width="100%">
 
 
 ```python
@@ -544,7 +544,7 @@ plt.show(g)
 ```python
 sns.jointplot(x="points", y="price", data=winetrim)
 ```
-<img src="output_27_0.png" width="100%">
+<img src="jointplot points vs price.png" width="100%">
 
 
 ```python
