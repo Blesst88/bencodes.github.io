@@ -793,3 +793,413 @@ lregress(dataX1,datay1,nameX1,namey1)
 
 
 <img src="output_37_3.png" width="100%">
+
+
+```python
+# set up OVR logit regression for wine varieties using the word counts 
+
+def logregress(grape_variety):
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score
+
+    # split data into Train and Test for  X and y_
+    X = dfwinerate2.values  # array of 16345 rows x 500 words 
+    # y = winevariety[u'grapevar__Barbera'] #array of  16345 rows x 1 for points 
+    y = winevariety[grape_variety].values #array of  16345 rows x 1 for points 
+
+    # split the new DataFrame into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.5)
+
+    # Run Multinomial  Logit regression to check if description  terms can be used to predict variety  
+
+    model=LogisticRegression(multi_class='ovr',solver ='newton-cg').fit(X_train,y_train)
+    # print model.summary()
+    yhat = model.predict(X_test)  # will output array with integer values.
+
+#     print (yhat, model.coef_,model.score, accuracy_score(y_test, yhat))
+    
+    # change the array into a list 
+    import numpy as np
+    modelcoef=np.array(model.coef_).tolist()
+    len(modelcoef)
+    len(countfeatures)
+    
+    # split the list into individual items
+    import itertools
+    words = list(itertools.chain(*modelcoef))
+#     words
+    
+#     setup a dictionary with word counts and word labels
+    varietydict = dict(zip(countfeatures,words))
+#     varietydict
+
+# add accuracy score and wine variety to dictionary
+    varietydict['0Accuracy'] = accuracy_score(y_test, yhat)*100
+   
+#     varietydict
+# sort the words with largest word counts first 
+    sorted_d = sorted(varietydict.items(), key=lambda x: x[1],reverse=True)
+#     sorted_d
+    varietydict['0Grape'] = grape_variety
+
+    # Calculate the confusion matrix metrics for your model below.¶
+    from sklearn.metrics import classification_report
+    print(grape_variety,'\n',classification_report(y_test, yhat))
+    
+
+#     get top 50 words scores 
+    results=[grape_variety]+sorted_d[:500]
+    return results
+```
+
+
+```python
+# Run logit regression of words vectoriser scores vs variety of grapes for all grapes variety
+
+# choose X and Y for linear regression 
+dfwinefinal= pd.DataFrame()
+
+for w in winevariety:
+    #     print(w)
+    # grapename = input('enter grape variety:')
+#     ugrape='grapevar__'+grapename
+    ugrape=w
+
+    dfwinefinal[ugrape]=logregress(ugrape)
+dfwinefinal
+```
+
+    C:\Users\bless\Anaconda3\lib\site-packages\sklearn\model_selection\_split.py:2026: FutureWarning: From version 0.21, test_size will always complement train_size unless both are specified.
+      FutureWarning)
+    
+
+    grapevar__Barbera 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9119
+              1       0.90      0.15      0.26        60
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Bordeaux-style Red Blend 
+                  precision    recall  f1-score   support
+    
+              0       0.97      0.99      0.98      8712
+              1       0.63      0.40      0.49       467
+    
+    avg / total       0.95      0.96      0.95      9179
+    
+    grapevar__Bordeaux-style White Blend 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9117
+              1       0.20      0.03      0.06        62
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Cabernet Franc 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9077
+              1       0.57      0.08      0.14       102
+    
+    avg / total       0.99      0.99      0.98      9179
+    
+    grapevar__Cabernet Sauvignon 
+                  precision    recall  f1-score   support
+    
+              0       0.95      0.98      0.96      8304
+              1       0.73      0.48      0.58       875
+    
+    avg / total       0.93      0.93      0.93      9179
+    
+    grapevar__Carmenère 
+                  precision    recall  f1-score   support
+    
+              0       1.00      1.00      1.00      9135
+              1       0.47      0.16      0.24        44
+    
+    avg / total       0.99      1.00      0.99      9179
+    
+    
+
+    C:\Users\bless\Anaconda3\lib\site-packages\sklearn\metrics\classification.py:1135: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
+      'precision', 'predicted', average, warn_for)
+    
+
+    grapevar__Champagne Blend 
+                  precision    recall  f1-score   support
+    
+              0       1.00      1.00      1.00      9139
+              1       0.00      0.00      0.00        40
+    
+    avg / total       0.99      1.00      0.99      9179
+    
+    grapevar__Chardonnay 
+                  precision    recall  f1-score   support
+    
+              0       0.95      0.98      0.97      8157
+              1       0.78      0.63      0.70      1022
+    
+    avg / total       0.93      0.94      0.94      9179
+    
+    grapevar__Chenin Blanc 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9124
+              1       0.44      0.07      0.12        55
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Grenache 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9114
+              1       0.80      0.12      0.21        65
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Grüner Veltliner 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9087
+              1       0.56      0.21      0.30        92
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Malbec 
+                  precision    recall  f1-score   support
+    
+              0       0.98      0.99      0.99      8899
+              1       0.67      0.34      0.45       280
+    
+    avg / total       0.97      0.97      0.97      9179
+    
+    grapevar__Merlot 
+                  precision    recall  f1-score   support
+    
+              0       0.98      0.99      0.99      8909
+              1       0.69      0.40      0.50       270
+    
+    avg / total       0.97      0.98      0.97      9179
+    
+    grapevar__Nebbiolo 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9028
+              1       0.75      0.54      0.63       151
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Petite Sirah 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9116
+              1       0.53      0.13      0.21        63
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Pinot Grigio 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9121
+              1       0.69      0.16      0.25        58
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Pinot Gris 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9041
+              1       0.52      0.16      0.24       138
+    
+    avg / total       0.98      0.99      0.98      9179
+    
+    grapevar__Pinot Noir 
+                  precision    recall  f1-score   support
+    
+              0       0.93      0.97      0.95      7821
+              1       0.80      0.60      0.69      1358
+    
+    avg / total       0.91      0.92      0.91      9179
+    
+    grapevar__Portuguese Red 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9002
+              1       0.58      0.28      0.37       177
+    
+    avg / total       0.98      0.98      0.98      9179
+    
+    grapevar__Portuguese White 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9120
+              1       0.19      0.07      0.10        59
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Red Blend 
+                  precision    recall  f1-score   support
+    
+              0       0.95      0.98      0.96      8375
+              1       0.67      0.44      0.53       804
+    
+    avg / total       0.92      0.93      0.93      9179
+    
+    grapevar__Rhône-style Red Blend 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9038
+              1       0.56      0.21      0.30       141
+    
+    avg / total       0.98      0.99      0.98      9179
+    
+    grapevar__Riesling 
+                  precision    recall  f1-score   support
+    
+              0       0.98      0.99      0.99      8647
+              1       0.85      0.69      0.76       532
+    
+    avg / total       0.97      0.98      0.97      9179
+    
+    grapevar__Rosé 
+                  precision    recall  f1-score   support
+    
+              0       0.98      1.00      0.99      8842
+              1       0.82      0.53      0.64       337
+    
+    avg / total       0.98      0.98      0.98      9179
+    
+    grapevar__Sangiovese 
+                  precision    recall  f1-score   support
+    
+              0       0.98      0.99      0.99      8943
+              1       0.57      0.37      0.45       236
+    
+    avg / total       0.97      0.98      0.97      9179
+    
+    grapevar__Sangiovese Grosso 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9046
+              1       0.82      0.57      0.67       133
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Sauvignon Blanc 
+                  precision    recall  f1-score   support
+    
+              0       0.97      0.99      0.98      8723
+              1       0.70      0.41      0.52       456
+    
+    avg / total       0.96      0.96      0.96      9179
+    
+    grapevar__Shiraz 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9095
+              1       0.58      0.26      0.36        84
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Sparkling Blend 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9059
+              1       0.48      0.09      0.15       120
+    
+    avg / total       0.98      0.99      0.98      9179
+    
+    grapevar__Syrah 
+                  precision    recall  f1-score   support
+    
+              0       0.97      0.99      0.98      8715
+              1       0.75      0.38      0.50       464
+    
+    avg / total       0.96      0.96      0.96      9179
+    
+    grapevar__Tempranillo Blend 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      1.00      9104
+              1       0.61      0.15      0.24        75
+    
+    avg / total       0.99      0.99      0.99      9179
+    
+    grapevar__Viognier 
+                  precision    recall  f1-score   support
+    
+              0       0.99      1.00      0.99      9071
+              1       0.33      0.04      0.07       108
+    
+    avg / total       0.98      0.99      0.98      9179
+    
+    grapevar__Zinfandel 
+                  precision    recall  f1-score   support
+    
+              0       0.98      1.00      0.99      8928
+              1       0.64      0.28      0.39       251
+    
+    avg / total       0.97      0.98      0.97      9179
+    
+    
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>grapevar__Barbera</th>
+      <th>grapevar__Bordeaux-style Red Blend</th>
+      <th>grapevar__Bordeaux-style White Blend</th>
+      <th>grapevar__Cabernet Franc</th>
+      <th>grapevar__Cabernet Sauvignon</th>
+      <th>grapevar__Carmenère</th>
+      <th>grapevar__Champagne Blend</th>
+      <th>grapevar__Chardonnay</th>
+      <th>grapevar__Chenin Blanc</th>
+      <th>grapevar__Grenache</th>
+      <th>grapevar__Grüner Veltliner</th>
+      <th>grapevar__Malbec</th>
+      <th>grapevar__Merlot</th>
+      <th>grapevar__Nebbiolo</th>
+      <th>grapevar__Petite Sirah</th>
+      <th>grapevar__Pinot Grigio</th>
+      <th>grapevar__Pinot Gris</th>
+      <th>grapevar__Pinot Noir</th>
+      <th>grapevar__Portuguese Red</th>
+      <th>grapevar__Portuguese White</th>
+      <th>grapevar__Red Blend</th>
+      <th>grapevar__Rhône-style Red Blend</th>
+      <th>grapevar__Riesling</th>
+      <th>grapevar__Rosé</th>
+      <th>grapevar__Sangiovese</th>
+      <th>grapevar__Sangiovese Grosso</th>
+      <th>grapevar__Sauvignon Blanc</th>
+      <th>grapevar__Shiraz</th>
+      <th>grapevar__Sparkling Blend</th>
+      <th>grapevar__Syrah</th>
+      <th>grapevar__Tempranillo Blend</th>
+      <th>grapevar__Viognier</th>
+      <th>grapevar__Zinfandel</th>
+    </tr>
+  </thead>
