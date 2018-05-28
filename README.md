@@ -1203,3 +1203,76 @@ dfwinefinal
       <th>grapevar__Zinfandel</th>
     </tr>
   </thead>
+ <tbody>
+    <tr>
+      <th>0</th>
+      <td>grapevar__Barbera</td>
+      <td>grapevar__Bordeaux-style Red Blend</td>
+      <td>grapevar__Bordeaux-style White Blend</td>
+      <td>grapevar__Cabernet Franc</td>
+      <td>grapevar__Cabernet Sauvignon</td>
+      <td>grapevar__Carmenère</td>
+      <td>grapevar__Champagne Blend</td>
+      <td>grapevar__Chardonnay</td>
+      <td>grapevar__Chenin Blanc</td>
+      <td>grapevar__Grenache</td>
+      <td>grapevar__Grüner Veltliner</td>
+      <td>grapevar__Malbec</td>
+      <td>grapevar__Merlot</td>
+      <td>grapevar__Nebbiolo</td>
+      <td>grapevar__Petite Sirah</td>
+      <td>grapevar__Pinot Grigio</td>
+      <td>grapevar__Pinot Gris</td>
+      <td>grapevar__Pinot Noir</td>
+      <td>grapevar__Portuguese Red</td>
+      <td>grapevar__Portuguese White</td>
+      <td>grapevar__Red Blend</td>
+      <td>grapevar__Rhône-style Red Blend</td>
+      <td>grapevar__Riesling</td>
+      <td>grapevar__Rosé</td>
+      <td>grapevar__Sangiovese</td>
+      <td>grapevar__Sangiovese Grosso</td>
+      <td>grapevar__Sauvignon Blanc</td>
+      <td>grapevar__Shiraz</td>
+      <td>grapevar__Sparkling Blend</td>
+      <td>grapevar__Syrah</td>
+      <td>grapevar__Tempranillo Blend</td>
+      <td>grapevar__Viognier</td>
+      <td>grapevar__Zinfandel</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(0Accuracy, 99.4334894868722)</td>
+      <td>(0Accuracy, 95.78385445037586)</td>
+      <td>(0Accuracy, 99.25917855975597)</td>
+      <td>(0Accuracy, 98.91055670552348)</td>
+      <td>(0Accuracy, 93.37618476958275)</td>
+      <td>(0Accuracy, 99.50975051748556)</td>
+      <td>(0Accuracy, 99.56422268220939)</td>
+      <td>(0Accuracy, 93.87732868504195)</td>
+      <td>(0Accuracy, 99.38991175509315)</td>
+      <td>(0Accuracy, 99.35722845625885)</td>
+      <td>(0Accuracy, 99.04128990086066)</td>
+      <td>(0Accuracy, 97.48338598975923)</td>
+      <td>(0Accuracy, 97.7121690815993)</td>
+      <td>(0Accuracy, 98.94324000435776)</td>
+      <td>(0Accuracy, 99.32454515742457)</td>
+      <td>(0Accuracy, 99.42259505392744)</td>
+      <td>(0Accuracy, 98.51835711951193)</td>
+      <td>(0Accuracy, 91.9163307549842)</td>
+      <td>(0Accuracy, 98.2133129970585)</td>
+      <td>(0Accuracy, 99.2156008279769)</td>
+      <td>(0Accuracy, 93.18008497657698)</td>
+      <td>(0Accuracy, 98.5292515524567)</td>
+      <td>(0Accuracy, 97.50517485564878)</td>
+      <td>(0Accuracy, 97.85379670988125)</td>
+      <td>(0Accuracy, 97.66859134982025)</td>
+      <td>(0Accuracy, 99.19381196208738)</td>
+      <td>(0Accuracy, 96.20873733522171)</td>
+      <td>(0Accuracy, 99.15023423030831)</td>
+      <td>(0Accuracy, 98.6817736136834)</td>
+      <td>(0Accuracy, 96.21963176816647)</td>
+      <td>(0Accuracy, 99.22649526092167)</td>
+      <td>(0Accuracy, 98.77982351018629)</td>
+      <td>(0Accuracy, 97.5923303192069)</td>
+    </tr>
