@@ -566,7 +566,7 @@ variety=[u'grapevar__Barbera',u'grapevar__Bordeaux-style Red Blend',u'grapevar__
               u'grapevar__Shiraz',u'grapevar__Sparkling Blend',u'grapevar__Syrah',u'grapevar__Tempranillo Blend',
               u'grapevar__Viognier',u'grapevar__Zinfandel']
 winevariety=winesubext[variety]
-
+```
 
 ```python
 # Linear regression to determine relationships beteen X and Y 
@@ -1486,7 +1486,7 @@ winetrim['red_wine'].fillna(0,inplace=True)
 winetrim['white_wine'].fillna(0,inplace=True)
 winetrim['sparkling_wine'].fillna(0,inplace=True)
 winetrim[['red_wine','white_wine','sparkling_wine']]
-
+```
 
 <div>
 <style scoped>
@@ -1895,7 +1895,7 @@ print('Average prediction difference in predicted $: ', str(cumdiff / count).str
 def RFRegres(X,y,yname):
 #     features = dfwinerate2
 #     ypr = np.array(winetrim['points'])
-
+```
 
 ```python
 # Use Random Forest Regressor
@@ -2171,7 +2171,7 @@ ypr = np.array(joinwinefinal[yname])
 # len(ypr), Xfeat.shape
 # print(ypr)
 RFRegres(Xfeat,ypr,yname)
-
+```
 enter predictor y : eg price price
 Training Features Shape: (13767, 533)
 Training Labels Shape: (13767,)
@@ -2194,7 +2194,7 @@ actualprice	predictedprice	Residuals
 4589	50.0	53.94	-3.94
 4590 rows × 3 columns
 
-```
+
 ```python
 # compute ROC and AUCusing the differebnt regressors Ridge and Lasso
 def ROCAUC(variety):
@@ -2220,14 +2220,17 @@ def ROCAUC(variety):
     
     yhat = lr.predict(X_test)
     yhat_pp = lr.predict_proba(X_test)
-
+```
+```python
 # show confusion matrix 
     conmat = np.array(confusion_matrix(y_test, yhat, labels=[1,0]))
 
     confusion = pd.DataFrame(conmat, index=['Variety', 'Not Variety'],
                          columns=['predicted_Yes','predicted_No'])
     print(confusion)
+```
 
+```python
 # plot ROC and AUC curves without lasso and ridge 
     fpr, tpr, _ = roc_curve(y_test, yhat_pp[:,1])
     roc_auc = auc(fpr, tpr)
@@ -2251,8 +2254,11 @@ def ROCAUC(variety):
     yhat_ridge_pp = lr_ridge.predict_proba(X_test)
 
     fpr_ridge, tpr_ridge, _ = roc_curve(y_test, yhat_ridge_pp[:,1])
-    roc_auc_ridge = auc(fpr_ridge, tpr_ridge)
+    roc_a
+    uc_ridge = auc(fpr_ridge, tpr_ridge)
+```
 
+```python
 #   now use Lasso     
     lr_lasso = LogisticRegressionCV(penalty='l1', solver='liblinear', Cs=100, cv=10)
     lr_lasso.fit(X_train, y_train)
@@ -2262,7 +2268,9 @@ def ROCAUC(variety):
 
     fpr_lasso, tpr_lasso, _ = roc_curve(y_test, yhat_lasso_pp[:,1])
     roc_auc_lasso = auc(fpr_lasso, tpr_lasso)
+```
 
+```python
 # plot ROC and AUC graphs
 
     plt.figure(figsize=[8,8])
@@ -2282,13 +2290,17 @@ def ROCAUC(variety):
     plt.legend(loc="lower right")
     plt.show()
     
-    return print('done')
     
-    for w in variety:
+    return print('done')
+ ```
+ 
+
+```python
+  for w in variety:
 #     var=list(w)
     print('Variety is : ',w)
     ROCAUC(w)
-    
+ ```   
     
     Variety is :  grapevar__Barbera
 setup LR
@@ -2301,9 +2313,9 @@ setup LR
              predicted_Yes  predicted_No
 Variety                 10            38
 Not Variety              4          9127
-```
+
 <img src="output 100_1.png" width="100%">
-```
+
 done
 Variety is :  grapevar__Bordeaux-style Red Blend
 setup LR
@@ -2333,4 +2345,4 @@ Variety                  4            67
 Not Variety              4          9104
 ```
 <img src="output_102_1.png" width="100%">
-```
+
