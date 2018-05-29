@@ -2423,4 +2423,92 @@ def ROCAUC(variety):
 
 <img src="output_65_13.png" width="100%">
 
+
+### compare with SVM results 
+```python
+
+def svm(winetype):
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score
+    import itertools
+    from sklearn.svm import SVC
+
+    from sklearn.model_selection import GridSearchCV
+    clf = SVC()
+    
+    # split data into Train and Test for  X and y_
+    X = dfwinerate2.values  # array of 16345 rows x 500 words 
+    # y = winevariety[u'grapevar__Barbera'] #array of  16345 rows x 1 for points 
+    y = winetrim[winetype].values #array of  16345 rows x 1 for points 
+#     y = winevariety[grape_variety].values 
+
+    # split the new DataFrame into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.5)
+
+    # Run Multinomial  Logit regression to check if description  terms can be used to predict variety  
+
+#     model=LogisticRegression(multi_class='ovr',solver ='newton-cg').fit(X_train,y_train)
+    model=LogisticRegressionCV(multi_class='ovr',solver ='newton-cg',Cs=100, 
+                                 cv=5).fit(X_train,y_train)
+    # print model.summary()
+    yhat = model.predict(X_test)  # will output array with integer values.
+
+    
+    
+    # let's try to check accuracy for each kernel 
+    logreg = LogisticRegression()
+    print (cross_val_score(logreg, X_train, y_train, cv=5, scoring='accuracy').mean(),'LogReg')
+
+    clf = SVC(kernel = 'linear')        # I like lines
+    print (cross_val_score(clf, X_train, y_train, cv=5, scoring='accuracy').mean(), "SVM linear")
+
+
+    clf = SVC(kernel = 'poly', degree = 3)        # I like 3rd degree polys
+    print (cross_val_score(clf, X_train, y_train, cv=5, scoring='accuracy').mean(), "SVM 3rd degree polynomials")
+
+    clf = SVC(kernel = 'rbf')           # I like circles
+    print (cross_val_score(clf, X_train, y_train, cv=5, scoring='accuracy').mean(), "SVM rbf circles")
+
+
+    return print('done')
+ ``` 
  
+ ```python
+# compare logit and SVM using words vectoriser scores vs variety of grapes for all grapes variety
+types=['red_wine','white_wine','sparkling_wine']
+winetypes=winetrim[types]
+# choose X and Y for linear regression 
+dfwinefinal2= pd.DataFrame()
+
+for w in winetypes:
+    print(w)
+    dfwinefinal2[w]=svm(w)
+dfwinefinal2
+ ```
+ 
+ 
+ red_wine
+
+0.9413807945040592 LogReg
+0.939093983628489 SVM linear
+0.6768359336606301 SVM 3rd degree polynomials
+0.9369124258263083 SVM rbf circles
+done
+
+white_wine
+
+0.9349534215721912 LogReg
+0.9353887950430384 SVM linear
+0.6944868532654792 SVM 3rd degree polynomials
+0.9276515016523996 SVM rbf circles
+done
+
+sparkling_wine
+
+0.9819132911247127 LogReg
+0.9772281263936804 SVM linear
+0.9823491991280567 SVM 3rd degree polynomials
+0.9823491991280567 SVM rbf circles
+done
