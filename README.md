@@ -2325,17 +2325,17 @@ def ROCAUC(variety):
     
     
     return print('done')
- ```
+```
  
-
 ```python
   for w in variety:
 #     var=list(w)
     print('Variety is : ',w)
     ROCAUC(w)
+    ```
+    
 
- 
-  
+
   
    Variety is :  grapevar__Barbera
     setup LR
