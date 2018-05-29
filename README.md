@@ -2333,8 +2333,11 @@ def ROCAUC(variety):
 #     var=list(w)
     print('Variety is : ',w)
     ROCAUC(w)
- ```   
-  Variety is :  grapevar__Barbera
+ 
+ ```python
+  
+  
+   Variety is :  grapevar__Barbera
     setup LR
     [0.99319728 0.99455782 0.99319728 0.99047619 0.99319728 0.99319728
      0.99319728 0.99591281 0.99591281 0.9986376  0.99455041 0.99455041
@@ -2457,7 +2460,7 @@ def ROCAUC(variety):
 <img src="output_65_13.png" width="100%">
 
 
-
+ ```
 
 
    
