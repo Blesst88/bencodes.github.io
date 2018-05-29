@@ -143,8 +143,10 @@ wine.head(5)
 </div>
 
 
-```python
+
+
 ### EDA section 
+```python
 wine.variety.unique()
 ```
     array(['Cabernet Sauvignon', 'Tinta de Toro', 'Sauvignon Blanc',
