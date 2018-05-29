@@ -861,8 +861,7 @@ for w in winevariety:
 dfwinefinal
 ```
 
-    C:\Users\bless\Anaconda3\lib\site-packages\sklearn\model_selection\_split.py:2026: FutureWarning: From version 0.21, test_size will always complement train_size unless both are specified.
-      FutureWarning)
+ 
     
 
     grapevar__Barbera 
@@ -915,9 +914,7 @@ dfwinefinal
     
     
 
-    C:\Users\bless\Anaconda3\lib\site-packages\sklearn\metrics\classification.py:1135: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
-      'precision', 'predicted', average, warn_for)
-    
+   
 
     grapevar__Champagne Blend 
                   precision    recall  f1-score   support
@@ -1136,9 +1133,6 @@ dfwinefinal
     avg / total       0.97      0.98      0.97      9179
     
     
-
-
-
 
 
 <table border="1" class="dataframe">
@@ -1488,7 +1482,7 @@ winetrim['red_wine'].fillna(0,inplace=True)
 winetrim['white_wine'].fillna(0,inplace=True)
 winetrim['sparkling_wine'].fillna(0,inplace=True)
 winetrim[['red_wine','white_wine','sparkling_wine']]
-
+```
 
 <div>
 <style scoped>
@@ -1819,7 +1813,6 @@ mape = 100 * (errors / y_test)
 accuracy = 100 - np.mean(mape)
 print('Accuracy:', round(accuracy, 2), '%.')
 
-
 ```
 
     Mean Absolute Error: 17.07 degrees.
@@ -2085,7 +2078,7 @@ ypr = np.array(joinwinefinal[yname])
 # print(ypr)
 RFRegres(Xfeat,ypr,yname)
 ```
-```
+
 
     enter predictor y : eg price price
     Training Features Shape: (13767, 533)
@@ -2323,7 +2316,6 @@ def ROCAUC(variety):
     plt.legend(loc="lower right")
     plt.show()
     
-    
     return print('done')
 ```
  
@@ -2332,11 +2324,8 @@ def ROCAUC(variety):
 #     var=list(w)
     print('Variety is : ',w)
     ROCAUC(w)
- ```
-    
+ ``` 
 
-
-  
    Variety is :  grapevar__Barbera
     setup LR
     [0.99319728 0.99455782 0.99319728 0.99047619 0.99319728 0.99319728
@@ -2459,8 +2448,4 @@ def ROCAUC(variety):
 
 <img src="output_65_13.png" width="100%">
 
-
-
-
-   
  
