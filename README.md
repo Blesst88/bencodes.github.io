@@ -1488,7 +1488,7 @@ winetrim['red_wine'].fillna(0,inplace=True)
 winetrim['white_wine'].fillna(0,inplace=True)
 winetrim['sparkling_wine'].fillna(0,inplace=True)
 winetrim[['red_wine','white_wine','sparkling_wine']]
-```
+
 
 <div>
 <style scoped>
