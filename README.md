@@ -1393,7 +1393,7 @@ dfwinefinal
     </tr>
     </tbody>
 </table>
-</div>
+
 
   
 ```python
@@ -1644,6 +1644,7 @@ dfwinefinal2
     
     
 
+
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1708,8 +1709,7 @@ dfwinefinal2
       <td>(tropical, 1.8636772049915336)</td>
       <td>(strawberry, 1.0397613107752979)</td>
     </tr>
-    
-     <tr>
+    <tr>
       <th>497</th>
       <td>(yellow, -2.334603457485137)</td>
       <td>(syrah, -2.2371457504213836)</td>
