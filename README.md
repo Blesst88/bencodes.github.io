@@ -787,6 +787,7 @@ lregress(dataX1,datay1,nameX1,namey1)
 
 <img src="output_37_3.png" width="100%">
 
+### Predictive Modelling 
 
 ```python
 # set up OVR logit regression for wine varieties using the word counts 
