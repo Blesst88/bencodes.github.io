@@ -1475,9 +1475,6 @@ winetrim.loc[(winetrim['variety'] == u'Pinot Noir') |  (winetrim['variety'] == u
         |  (winetrim['variety'] ==  u'Barbera') |  (winetrim['variety'] ==  u'Shiraz') |  (winetrim['variety'] ==  u'Grenache')|  (winetrim['variety'] ==  u'Sangiovese Grosso')
          |  (winetrim['variety'] ==  u'Tempranillo Blend'),'red_wine']=1
 
-```
-
-```python
 winetrim['red_wine'].fillna(0,inplace=True)
 winetrim['white_wine'].fillna(0,inplace=True)
 winetrim['sparkling_wine'].fillna(0,inplace=True)
