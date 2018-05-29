@@ -144,7 +144,7 @@ wine.head(5)
 
 
 ```python
-# EDA section 
+### EDA section 
 wine.variety.unique()
 ```
     array(['Cabernet Sauvignon', 'Tinta de Toro', 'Sauvignon Blanc',
