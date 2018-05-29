@@ -2333,7 +2333,7 @@ def ROCAUC(variety):
 #     var=list(w)
     print('Variety is : ',w)
     ROCAUC(w)
- ```
+
  
   
   
@@ -2461,7 +2461,7 @@ def ROCAUC(variety):
 
 
 
-
+ ```
 
    
  
